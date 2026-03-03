@@ -13,16 +13,19 @@ export default function HeroSection() {
     charter: {
       type: 'video', // Change to 'video' when you have a file
       src: '/assets/Catamaran_Sunset_Sail_Video.webm', // The Sailing Shot
+      srcMp4: '/assets/Catamaran_Sunset_Sail_Video.mp4', // The Sailing Shot in MP4
       alt: 'Sailing the Fjord'
     },
     hotel: {
       type: 'video', 
       src: '/assets/Aurora_Video_Generation.webm', // The Cozy Interior Shot
+      srcMp4: '/assets/Aurora_Video_Generation.mp4', // The Cozy Interior Shot in MP4
       alt: 'Aurora Sailing'
     },
     expedition: {
       type: 'video',
       src: '/assets/CataSailing.webm', // The Adventure/Nature Shot
+      srcMp4: '/assets/CataSailing.mp4', // The Adventure/Nature Shot in MP4
       alt: 'Fishing Expedition'
     }
   }
@@ -49,6 +52,7 @@ export default function HeroSection() {
               className="object-cover w-full h-full scale-105"
             >
               <source src={bg.src} type="video/webm" />
+              <source src={bg.srcMp4} type="video/mp4" />
             </video>
           ) : (
             <img

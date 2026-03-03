@@ -59,7 +59,7 @@ function HomeContent() {
                   <span className="text-[10px] text-amber-200 uppercase tracking-[0.2em]">Catamaran</span>
                 </div>
                 <div>
-                  <span className="block text-4xl font-serif font-bold text-white drop-shadow-md">12</span>
+                  <span className="block text-4xl font-serif font-bold text-white drop-shadow-md">10</span>
                   <span className="text-[10px] text-amber-200 uppercase tracking-[0.2em]">Guest Capacity</span>
                 </div>
               </div>

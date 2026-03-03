@@ -111,7 +111,7 @@ export default function BookingForm() {
             <span className="font-bold text-white">{guests} {t.booking.guests}</span>
           </div>
           <input 
-            type="range" min="4" max="12" step="1" 
+            type="range" min="4" max="10" step="1" 
             value={guests} onChange={(e) => setGuests(parseInt(e.target.value))}
             className="w-full accent-blue-400 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
           />

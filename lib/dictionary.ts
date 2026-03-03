@@ -3,7 +3,7 @@ export const dictionary = {
     nav: { book: "Book Voyage", contact: "Contact" },
     hero: { 
       title: "The Fjord is Your Lounge.", 
-      subtitle: "Experience Oslo's most exclusive catamaran. Silent electric cruising. Corporate power. Nordic luxury." 
+      subtitle: "Experience Oslo's most exclusive catamaran. Silent cruising. Corporate power." 
     },
     booking: {
       tabs: { day: "Day", stay: "Stay", adv: "Adventure" },
@@ -16,7 +16,7 @@ export const dictionary = {
     nav: { book: "Bestill Nå", contact: "Kontakt" },
     hero: { 
       title: "Fjorden er Din Stue.", 
-      subtitle: "Opplev Oslos mest eksklusive katamaran. Stille elektrisk cruise. Bedriftskraft. Nordisk luksus." 
+      subtitle: "Opplev Oslos mest eksklusive katamaran. Stille cruise. Bedriftskraft." 
     },
     booking: {
       tabs: { day: "Dag", stay: "Overnatting", adv: "Eventyr" },

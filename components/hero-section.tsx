@@ -48,7 +48,10 @@ export default function HeroSection() {
           
           {bg.type === 'video' ? (
             <video
-              autoPlay muted loop playsInline
+              autoPlay 
+              loop 
+              muted 
+              playsInline
               className="object-cover w-full h-full scale-105"
             >
               <source src={bg.src} type="video/webm" />

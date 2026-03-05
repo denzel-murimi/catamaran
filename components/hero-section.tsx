@@ -18,8 +18,8 @@ export default function HeroSection() {
     },
     hotel: {
       type: 'video', 
-      src: '/assets/Catamaran_Sunset_Sail_Video.webm', // The Cozy Interior Shot
-      srcMp4: '/assets/Catamaran_Sunset_Sail_Video.mp4', // The Cozy Interior Shot in MP4
+      src: '/assets/AuroraVid.mp4', // The Cozy Interior Shot
+      srcMp4: '/assets/AuroraVid.mp4', // The Cozy Interior Shot in MP4
       alt: 'Aurora Sailing'
     },
     expedition: {

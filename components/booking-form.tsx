@@ -11,53 +11,58 @@ import { useMode } from '@/components/mode-context'
 import TermsModal from '@/components/terms-modal'
 import { LangProvider } from './lang-context'
 import { useLang } from '@/components/lang-context'
+
 export default function BookingForm() {
   const { t, lang } = useLang()
   const [range, setRange] = useState<DateRange | undefined>()
   const [date, setDate] = useState<Date | undefined>()
-  const [guests, setGuests] = useState(4) // Default to min required for Expedition
-  const [showTerms, setShowTerms] = useState(false) // <--- 2. NEW STATE
+  
+  // NEW RULES: Default 5, Max 10.
+  const [guests, setGuests] = useState(5) 
+  const [showTerms, setShowTerms] = useState(false) 
   const [agreed, setAgreed] = useState(false)
   
-  // Modes: 'charter' (Hourly), 'hotel' (Nightly Room), 'expedition' (Per Person All-Inclusive)
+  // NEW STATE: Captain Experience Toggle
+  const [isExperiencedCaptain, setIsExperiencedCaptain] = useState(false) 
+  
   const { mode, setMode } = useMode()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [totalPrice, setTotalPrice] = useState(0)
+  
+  // Changed from numbers to a string so we can display ranges like "$4,000 - $6,000"
+  const [priceDisplay, setPriceDisplay] = useState('')
 
   useEffect(() => {
     if (mode === 'charter') {
-      setTotalPrice(40000) // Fixed boat rate
+      setPriceDisplay('$4,000') // Update this fixed rate to whatever USD value the owner wants
     } 
     else if (mode === 'hotel' && range?.from && range?.to) {
-      const nights = differenceInDays(range.to, range.from)
-      setTotalPrice(nights * 6000) // Fixed room rate
+      const nights = Math.max(1, differenceInDays(range.to, range.from))
+      setPriceDisplay(`$${nights * 600}`) // Update this fixed rate to whatever USD value the owner wants
     } 
     else if (mode === 'expedition' && range?.from && range?.to) {
-      const nights = differenceInDays(range.to, range.from)
-      // 4,500 NOK per person per day
-      setTotalPrice(nights * guests * 4500) 
+      const days = Math.max(1, differenceInDays(range.to, range.from))
+      const weeks = Math.max(1, Math.round(days / 7))
+      
+      // NEW PRICING LOGIC
+      if (isExperiencedCaptain) {
+        // Bareboat Weekly Rate
+        setPriceDisplay(`$${4000 * weeks} - $${6000 * weeks}`)
+      } else {
+        // Full Board + Captain (Assuming $400 is per person, per day. If it's a flat $400 total per day, remove "* guests")
+        setPriceDisplay(`$${days * guests * 400}`) 
+      }
     } 
     else {
-      setTotalPrice(0)
+      setPriceDisplay('')
     }
-  }, [mode, range, date, guests])
+  }, [mode, range, date, guests, isExperiencedCaptain])
 
- async function handleSubmit(formData: FormData) {
+  async function handleSubmit(formData: FormData) {
     setIsSubmitting(true)
     
-    // 1. DEFINE WHAT MODES USE A CALENDAR RANGE
-    // Previously, you only checked for 'hotel'. Now we add 'expedition'.
-    const isRangeMode = mode === 'hotel' || mode === 'expedition' // <--- FIX HERE
-    
-    // 2. SELECT THE CORRECT DATES BASED ON THAT MODE
-    // If it's a range mode, grab the range. Otherwise, grab the single date.
+    const isRangeMode = mode === 'hotel' || mode === 'expedition'
     const startDate = isRangeMode ? range?.from : date
     const endDate = isRangeMode ? range?.to : date
-
-    // 3. DEBUGGING (Optional: You can remove this after testing)
-    console.log("Submitting Mode:", mode)
-    console.log("Start:", startDate)
-    console.log("End:", endDate)
 
     if (!startDate) {
         alert("Please select dates first")
@@ -65,10 +70,10 @@ export default function BookingForm() {
         return
     }
 
-    // 4. APPEND GUEST COUNT
     formData.append('guestCount', guests.toString())
+    // Send the captain choice to the server so you know what they booked
+    formData.append('isExperiencedCaptain', isExperiencedCaptain.toString()) 
 
-    // 5. SEND TO SERVER
     const result = await createBooking(formData, startDate, endDate, mode)
     
     if (result.success && result.redirectUrl) {
@@ -104,21 +109,51 @@ export default function BookingForm() {
         ))}
       </div>
 
-      {/* 2. Guest Slider (Only for Expedition) */}
+      {/* 2. Expedition Specific UI (Slider & Captain Toggle) */}
       {mode === 'expedition' && (
-        <div className="mb-6 bg-blue-900/20 border border-blue-500/30 p-4 rounded-lg">
-          <div className="flex justify-between text-sm mb-2">
-            <span className="text-blue-200 flex items-center gap-2"><Users className="w-4 h-4"/> Guest Count</span>
-            <span className="font-bold text-white">{guests} {t.booking.guests}</span>
+        <div className="mb-6 space-y-4">
+          
+          {/* GUEST SLIDER */}
+          <div className="bg-slate-900/50 border border-white/10 p-4 rounded-xl">
+            <div className="flex justify-between text-sm mb-4">
+              <span className="text-gray-300 flex items-center gap-2"><Users className="w-4 h-4"/> Guest Count</span>
+              <span className="font-bold text-white">{guests} {t.booking.guests}</span>
+            </div>
+            
+            <input 
+              type="range" min="5" max="10" step="1" 
+              value={guests} onChange={(e) => setGuests(parseInt(e.target.value))}
+              className="w-full accent-amber-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer"
+            />
+            <div className="flex justify-between text-xs text-gray-500 mt-2 font-mono">
+               <span>{t.booking.min}: 5</span>
+               <span>{t.booking.max}: 10</span>
+            </div>
           </div>
-          <input 
-            type="range" min="4" max="12" step="1" 
-            value={guests} onChange={(e) => setGuests(parseInt(e.target.value))}
-            className="w-full accent-blue-400 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
-          />
-          <p className="text-[10px] text-blue-300/70 mt-2 text-center">
-            *Includes Captain, Sea Fishing & Full Board (4 Meals/Day)
-          </p>
+
+          {/* CAPTAIN EXPERIENCE TOGGLE */}
+          <div 
+            className={clsx(
+              "p-4 border rounded-xl flex items-start gap-3 cursor-pointer transition-all",
+              isExperiencedCaptain ? "border-amber-500/50 bg-amber-500/10" : "border-white/10 bg-slate-800/50"
+            )}
+            onClick={() => setIsExperiencedCaptain(!isExperiencedCaptain)}
+          >
+             <input 
+                type="checkbox" 
+                checked={isExperiencedCaptain}
+                onChange={(e) => setIsExperiencedCaptain(e.target.checked)}
+                className="mt-1 accent-amber-500 w-4 h-4 cursor-pointer"
+                onClick={(e) => e.stopPropagation()} 
+             />
+             <div>
+                <label className="text-sm font-bold text-white cursor-pointer">{t.booking.captainTitle}</label>
+                <p className="text-[11px] text-gray-400 mt-1 leading-relaxed">
+                  {t.booking.captainDesc}
+                </p>
+             </div>
+          </div>
+
         </div>
       )}
 
@@ -143,12 +178,13 @@ export default function BookingForm() {
       </div>
 
       {/* 4. Price Preview */}
-      {totalPrice > 0 && (
+      {priceDisplay && (
         <div className="mb-6 p-4 bg-emerald-900/20 border border-emerald-500/30 rounded-lg flex justify-between items-center">
-          <span className="text-emerald-400 text-sm font-medium">Estimated Total</span>
+          <span className="text-emerald-400 text-sm font-medium">{t.booking.estimatedTotal}</span>
           <div className="text-right">
-            <span className="text-white font-bold text-lg block">{totalPrice.toLocaleString()} NOK</span>
-            {mode === 'expedition' && <span className="text-[10px] text-gray-400 block">All-inclusive for {guests} guests</span>}
+            <span className="text-white font-bold text-lg block">{priceDisplay}</span>
+            {mode === 'expedition' && !isExperiencedCaptain && <span className="text-[10px] text-gray-400 block mt-1">{t.booking.fullBoard} {guests} {t.booking.guests}</span>}
+            {mode === 'expedition' && isExperiencedCaptain && <span className="text-[10px] text-gray-400 block mt-1">{t.booking.bareboatRate}</span>}
           </div>
         </div>
       )}
@@ -157,47 +193,47 @@ export default function BookingForm() {
       <form action={handleSubmit} className="space-y-4">
         {mode === 'charter' && (
           <select name="timeSlot" className={inputClasses}>
-            <option value="09:00">Morning Cruise (09:00 - 13:00)</option>
-            <option value="14:00">Afternoon Cruise (14:00 - 18:00)</option>
-            <option value="19:00">Evening Champagne (19:00 - 23:00)</option>
+            <option value="09:00">{t.booking.timeSlots.morning}</option>
+            <option value="14:00">{t.booking.timeSlots.afternoon}</option>
+            <option value="19:00">{t.booking.timeSlots.evening}</option>
           </select>
         )}
         
-        <input name="name" type="text" placeholder="Full Name" required className={inputClasses} />
-        <input name="email" type="email" placeholder="Corporate Email" required className={inputClasses} />
-        {/* 3. THE LEGAL CHECKBOX (Insert this right before the Button) */}
+        <input name="name" type="text" placeholder={t.booking.placeholders.name}   required className={inputClasses} />
+        <input name="email" type="email" placeholder={t.booking.placeholders.email} required className={inputClasses} />
+        
+        {/* THE LEGAL CHECKBOX */}
         <div className="flex items-start gap-3 p-3 bg-slate-800/50 rounded-lg border border-white/5">
           <input 
             type="checkbox" 
             id="terms"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
-            className="mt-1 w-4 h-4 rounded border-gray-600 bg-slate-700 text-blue-500 focus:ring-offset-slate-900"
+            className="mt-1 w-4 h-4 rounded border-gray-600 bg-slate-700 accent-amber-500 cursor-pointer"
           />
-          <label htmlFor="terms" className="text-xs text-gray-300 leading-snug select-none">
-            I agree to the{' '}
+          <label htmlFor="terms" className="text-xs text-gray-300 leading-snug select-none cursor-pointer">
+            {t.booking.terms.agree}{' '}
             <button 
               type="button" 
-              onClick={() => setShowTerms(true)}
-              className="text-white underline hover:text-blue-400 font-bold transition"
+              onClick={(e) => { e.preventDefault(); setShowTerms(true); }}
+              className="text-white underline hover:text-amber-400 font-bold transition"
             >
-              Cancellation Policy & Terms
+              {t.booking.terms.link}
             </button>
-            . I understand that the Captain has final authority on safety.
+            {t.booking.terms.safety}
           </label>
         </div>
 
-        
         <button 
-          // 4. DISABLE BUTTON IF NOT AGREED
           disabled={!agreed || isSubmitting || (mode !== 'charter' && (!range?.from || !range?.to)) || (mode === 'charter' && !date)}
           className="w-full bg-white text-black font-bold py-4 rounded-lg hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Processing...' : `Request ${mode === 'expedition' ? 'Adventure' : 'Booking'}`}
         </button>
       </form>
-     {/* 5. MOUNT THE MODAL */}
-        <TermsModal isOpen={showTerms} onClose={() => setShowTerms(false)} />
+      
+      {/* MOUNT THE MODAL */}
+      <TermsModal isOpen={showTerms} onClose={() => setShowTerms(false)} />
       </div>
     </LangProvider>
   )

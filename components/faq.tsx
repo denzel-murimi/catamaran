@@ -1,25 +1,10 @@
-import { LangProvider } from "./lang-context"
+'use client'
 
-const faqs = [
-  {
-    question: "What happens if it rains?",
-    answer: "The Valhalla Voyage is designed for all seasons. We have a heated, glass-enclosed salon with panoramic views, so you can enjoy the fjord in complete comfort while the storm rages outside. It's actually quite cozy."
-  },
-  {
-    question: "Can we bring our own alcohol?",
-    answer: "Yes. We operate on a 'Bring Your Own' basis for alcohol. We provide crystal glassware, ice, and coolers. We can also arrange catering partners to deliver food prior to your arrival."
-  },
-  {
-    question: "Is the boat moving or stationary?",
-    answer: "For 'Day Charters', we cruise the inner Oslofjord. For 'Overnight Stays', the boat remains docked at our private pier in Aker Brygge, giving you a floating luxury apartment in the city center."
-  },
-  {
-    question: "Are children allowed?",
-    answer: "Absolutely. We have life vests for all ages."
-  }
-]
+import { useLang } from '@/components/lang-context'
 
 export default function FAQ() {
+  const { t } = useLang(); // Correctly destructuring 't'
+
   return (
     <LangProvider>
       <div className="w-full max-w-2xl mx-auto py-12 px-4 sm:px-6 sm:py-20">

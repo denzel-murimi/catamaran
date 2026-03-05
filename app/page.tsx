@@ -55,12 +55,12 @@ function HomeContent() {
               {/* Stats Block */}
               <div className="flex gap-10 border-l-2 border-amber-500/80 pl-6 pt-2 backdrop-blur-sm">
                 <div>
-                  <span className="block text-4xl font-serif font-bold text-white drop-shadow-md">39ft</span>
-                  <span className="text-[10px] text-amber-200 uppercase tracking-[0.2em]">Catamaran</span>
+                  <span className="block text-4xl font-serif font-bold text-white drop-shadow-md">{t.hero.stats.length}</span>
+                  <span className="text-[10px] text-amber-200 uppercase tracking-[0.2em]">{t.hero.stats.type}</span>
                 </div>
                 <div>
-                  <span className="block text-4xl font-serif font-bold text-white drop-shadow-md">12</span>
-                  <span className="text-[10px] text-amber-200 uppercase tracking-[0.2em]">Guest Capacity</span>
+                  <span className="block text-4xl font-serif font-bold text-white drop-shadow-md">{t.hero.stats.capacityNum}</span>
+                  <span className="text-[10px] text-amber-200 uppercase tracking-[0.2em]">{t.hero.stats.capacityText}</span>
                 </div>
               </div>
 
@@ -85,9 +85,9 @@ function HomeContent() {
             <div className="max-w-4xl mx-auto px-6 space-y-16">
                 
                 <div className="text-center space-y-4">
-                  <h2 className="text-3xl font-serif text-white">Experience the Fjord</h2>
+                  <h2 className="text-3xl font-serif text-white">{t.experience.title}</h2>
                   <p className="text-gray-400 max-w-xl mx-auto">
-                    Whether for business or pleasure, Valhalla Voyage offers an unmatched perspective of Oslo.
+                    {t.experience.desc}
                   </p>
                 </div>
 

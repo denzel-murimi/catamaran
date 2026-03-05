@@ -1,6 +1,9 @@
+'use client'
 import { Mail, Phone, MapPin } from 'lucide-react'
+import { useLang } from './lang-context'
 
 export default function Footer() {
+  const { t } = useLang();
   return (
     <footer className="bg-slate-950 border-t border-white/10 pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -11,8 +14,7 @@ export default function Footer() {
             Valhalla Voyage
           </h3>
           <p className="text-gray-400 text-sm max-w-xs mx-auto md:mx-0 leading-relaxed">
-            Experience the Oslofjord in silent luxury. <br />
-            Charter. Overnight. Expedition.
+            {t.footer.tagline}
           </p>
         </div>
 
@@ -21,7 +23,7 @@ export default function Footer() {
           
           <div className="text-center md:text-right">
             <p className="text-xs font-bold text-amber-500 uppercase tracking-widest mb-1">
-              General Manager
+              {t.footer.manager}
             </p>
             <p className="text-white text-lg font-serif">Fred Olav Bore</p>
           </div>
@@ -54,7 +56,7 @@ export default function Footer() {
 
       {/* Copyright Bar */}
       <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-white/5 text-center text-xs text-gray-600">
-        © {new Date().getFullYear()} Valhalla Voyage. All rights reserved.
+        © {new Date().getFullYear()} Valhalla Voyage. {t.footer.rights}
       </div>
     </footer>
   )

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google' // 1. Google Fonts optimization
 import './globals.css'
 import Footer from '@/components/footer'
-
+import { LangProvider } from '@/components/lang-context'
 // 'subsets' reduces file size by only loading Latin characters
 const inter = Inter({ subsets: ['latin'] })
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL 
@@ -59,13 +59,14 @@ export default function RootLayout({
       */}
       <body className={`${inter.className} antialiased bg-slate-950 text-white`}>
         {/* Navigation Bar will go here later */}
-        
-        <main className="min-h-screen flex flex-col">
-          {children}
-        </main>
-        
-        {/* Footer will go here later */}
-        <Footer />
+        <LangProvider>
+          <main className="min-h-screen flex flex-col">
+            {children}
+          </main>
+          
+          {/* Footer will go here later */}
+          <Footer />
+        </LangProvider>
       </body>
     </html>
   )

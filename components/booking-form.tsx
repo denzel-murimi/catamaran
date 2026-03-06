@@ -88,23 +88,24 @@ export default function BookingForm() {
 
   return (
     <LangProvider>
-      <div className="bg-slate-900/80 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl max-w-md w-full shadow-2xl animate-in fade-in slide-in-from-right-8">
+      <div className="bg-slate-900/80 backdrop-blur-md border border-white/10 p-4 md:p-8 rounded-2xl max-w-md w-full shadow-2xl animate-in fade-in slide-in-from-right-8">
       
       {/* 1. Three-Way Toggle Switch */}
-      <div className="flex bg-slate-800/80 p-1 rounded-xl mb-6 overflow-hidden">
-        {['charter', 'hotel', 'expedition'].map((m) => (
-          <button
-            key={m}
-            onClick={() => { setMode(m as any); setRange(undefined); setDate(undefined); }}
-            className={clsx(
-              "flex-1 py-2 text-xs font-bold uppercase tracking-wider transition-all", 
-              mode === m ? "bg-white text-black shadow-lg rounded-lg" : "text-gray-400 hover:text-white"
-            )}
-          >
-            {m === 'charter' ? t.booking.tabs.day : 
-             m === 'hotel' ? t.booking.tabs.stay : 
-             t.booking.tabs.adv}
-          </button>
+      <div className="grid grid-cols-2 sm:flex bg-slate-800/50 p-1 rounded-xl mb-6 overflow-hidden gap-1">
+        {['charter', 'hotel', 'expedition'].map((m, i) => (
+            <button
+              key={m}
+              onClick={() => { setMode(m as any); setRange(undefined); setDate(undefined); }}
+              className={clsx(
+                "sm:flex-1 py-2 text-xs font-bold uppercase tracking-wider transition-all rounded-lg",
+                i === 2 && "col-span-2 sm:col-span-1",
+                mode === m ? "bg-white text-black shadow-lg" : "text-gray-400 hover:text-white border border-white/10"
+              )}
+            >
+              {m === 'charter' ? t.booking.tabs.day : 
+              m === 'hotel' ? t.booking.tabs.stay : 
+              t.booking.tabs.adv}
+            </button>
         ))}
       </div>
 
@@ -157,7 +158,8 @@ export default function BookingForm() {
       )}
 
       {/* 3. Calendar Logic */}
-      <div className="flex justify-center mb-6 bg-white/5 rounded-xl p-4">
+      <div className="flex justify-center mb-6 bg-white/5 rounded-xl p-2 sm:p-4 w-full max-w-full [&_.rdp]:w-full [&_.rdp-months]:w-full [&_.rdp-month]:w-full [&_.rdp-table]:w-full [&_.rdp-head_cell]:w-auto [&_.rdp-cell]:w-auto sm:[&_.rdp-day]:w-8 sm:[&_.rdp-day]:h-8 sm:[&_.rdp-day]:text-sm [&_.rdp-day]:text-xs">
+          
         {mode === 'charter' ? (
           <DayPicker
             mode="single" selected={date} onSelect={setDate}

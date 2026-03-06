@@ -5,6 +5,22 @@ import { useLang } from '@/components/lang-context'
 export default function FAQ() {
   const { t } = useLang(); // Correctly destructuring 't'
 
+  // Define the faqs array
+  const faqs = [
+    {
+      question: "What is Valhalla Voyage?",
+      answer: "Valhalla Voyage is an adventure game set in a mythical Norse world."
+    },
+    {
+      question: "How do I start playing?",
+      answer: "Simply sign up and follow the instructions on the homepage."
+    },
+    {
+      question: "Is there a multiplayer mode?",
+      answer: "Yes, you can play with friends online."
+    }
+  ];
+
   return (
     
       <div className="w-full max-w-2xl mx-auto py-12 px-4 sm:px-6 sm:py-20">

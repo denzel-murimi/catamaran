@@ -55,7 +55,9 @@ export async function POST(req: Request) {
             bookingType: meta.booking_type,
             dateRange: `${new Date(meta.start_date).toLocaleDateString()} - ${new Date(meta.end_date).toLocaleDateString()}`,
             totalPrice: `${(session.amount_total! / 100).toLocaleString()} NOK`,
-            bookingId: meta.booking_id
+            bookingId: meta.booking_id,
+            guestCount: Number(meta.guest_count), 
+            isExperiencedCaptain: meta.is_experienced_captain === 'true',
         }),
       })
     }

@@ -5,13 +5,14 @@ import Stripe from 'stripe'
 import { differenceInDays } from 'date-fns'
 import { Resend } from 'resend';
 import BookingReceipt from '@/components/emails/booking-receipt';
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+
+// Ensure your environment variables are set!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-01-28.clover',
+  apiVersion: '2026-01-28.clover', // Note: use your actual active Stripe API version
 })
 
 export async function createBooking(
@@ -28,9 +29,12 @@ export async function createBooking(
   const timeSlot = formData.get('timeSlot') as string
   const resend = new Resend(process.env.RESEND_API_KEY);
   
-  // Default to 1 guest if missing, or 4 if expedition
+  // NEW: Catch the Captain toggle from the frontend
+  const isExperiencedCaptain = formData.get('isExperiencedCaptain') === 'true';
+
+  // Default to 5 guests for expedition based on the new rules
   const rawGuests = formData.get('guestCount')
-  const guestCount = rawGuests ? Number(rawGuests) : (mode === 'expedition' ? 4 : 1)
+  const guestCount = rawGuests ? Number(rawGuests) : (mode === 'expedition' ? 5 : 1)
 
   let startTimestamp = new Date(startDate)
   let endTimestamp = (mode !== 'charter' && endDate) ? new Date(endDate) : new Date(startDate)
@@ -38,13 +42,13 @@ export async function createBooking(
   let calculatedPrice = 0
   let description = ""
 
-  // --- 2. PRICE CALCULATION LOGIC ---
+  // --- 2. NEW USD PRICE CALCULATION LOGIC ---
   if (mode === 'charter') {
     const [hours] = timeSlot ? timeSlot.split(':').map(Number) : [9]
     startTimestamp.setHours(hours, 0, 0)
     endTimestamp.setHours(hours + 4, 0, 0)
     
-    calculatedPrice = 40000
+    calculatedPrice = 4000 // $4,000 USD Fixed Day Rate
     description = `Charter: ${startDate.toDateString()} @ ${timeSlot}`
 
   } else if (mode === 'hotel') {
@@ -54,28 +58,33 @@ export async function createBooking(
     const nights = differenceInDays(endTimestamp, startTimestamp)
     if (nights < 1) return { success: false, error: "Stay must be at least 1 night" }
 
-    calculatedPrice = nights * 6000
+    calculatedPrice = nights * 600 // $600 USD per night
     description = `Hotel Stay: ${nights} Nights`
 
   } else if (mode === 'expedition') {
     startTimestamp.setHours(12, 0, 0)
     endTimestamp.setHours(12, 0, 0)
     
-    const nights = differenceInDays(endTimestamp, startTimestamp)
+    // We use days for Expedition to match the $400/day logic
+    const days = Math.max(1, differenceInDays(endTimestamp, startTimestamp))
     
-    // Safety check for dates
-    if (nights < 1) return { success: false, error: "Expedition must be at least 1 night" }
-
-    calculatedPrice = nights * guestCount * 4500
-    description = `Expedition: ${nights} Nights for ${guestCount} Guests`
+    if (isExperiencedCaptain) {
+      // BAREBOAT LOGIC: $4,000 minimum base rate per week
+      const weeks = Math.max(1, Math.round(days / 7))
+      calculatedPrice = weeks * 4000 
+      description = `Bareboat Expedition: ${weeks} Weeks (Captain: Self)`
+    } else {
+      // FULL BOARD LOGIC: $400 per person per day
+      calculatedPrice = days * guestCount * 400
+      description = `Full Board Expedition: ${days} Days for ${guestCount} Guests (Includes Captain)`
+    }
   }
 
-  console.log("Calculated Price:", calculatedPrice) // <--- CRITICAL CHECK
+  console.log("Calculated Price (USD):", calculatedPrice)
 
   // --- 3. THE SAFETY NET ---
-  // If logic failed and price is 0, DO NOT send to Stripe.
   if (calculatedPrice <= 0) {
-    return { success: false, error: "Price calculation failed (0 NOK). Please check dates." }
+    return { success: false, error: "Price calculation failed ($0). Please check dates." }
   }
 
   // --- 4. DATABASE INSERT ---
@@ -86,7 +95,7 @@ export async function createBooking(
       customer_email: email,
       booking_type: mode,
       duration: `[${startTimestamp.toISOString()}, ${endTimestamp.toISOString()})`,
-      total_price: calculatedPrice * 100, // Store in øre
+      total_price: calculatedPrice * 100, // Store in US Cents
       status: 'pending'
     })
     .select()
@@ -98,34 +107,36 @@ export async function createBooking(
   }
 
   if (booking) {
-    // 2. Send the Email
+    // --- 5. SEND RESEND EMAIL ---
     await resend.emails.send({
-      from: 'Valhalla Voyage <onboarding@resend.dev>', // Use this for testing
-      to: email, // The customer's email
+      from: 'Valhalla Voyage <onboarding@resend.dev>', // Change when you verify a domain
+      to: email, 
       subject: 'Your Valhalla Voyage Reservation',
       react: BookingReceipt({
         customerName: name,
         bookingType: mode,
         dateRange: `${startDate?.toLocaleDateString()} - ${endDate?.toLocaleDateString()}`,
-        totalPrice: `${calculatedPrice.toLocaleString()} NOK`,
-        bookingId: booking.id
+        totalPrice: `$${calculatedPrice.toLocaleString()} USD`, // Updated to USD
+        bookingId: booking.id,
+        guestCount: guestCount,                   
+        isExperiencedCaptain: isExperiencedCaptain
       }),
     });
-}
+  }
 
-  // --- 5. STRIPE CHECKOUT ---
+  // --- 6. STRIPE CHECKOUT ---
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
           price_data: {
-            currency: 'nok',
+            currency: 'usd', // CHANGED TO USD
             product_data: {
               name: mode === 'expedition' ? "Valhalla Expedition" : (mode === 'charter' ? "Fjord Charter" : "Valhalla Suite"),
               description: description,
             },
-            unit_amount: calculatedPrice * 100, // Amount in øre
+            unit_amount: calculatedPrice * 100, // Amount in US cents
           },
           quantity: 1,
         },
@@ -138,7 +149,8 @@ export async function createBooking(
         booking_id: booking.id,
         customer_name: name,
         booking_type: mode,
-        start_date: startDate.toISOString(), // Pass these so we can put them in the email later
+        is_experienced_captain: isExperiencedCaptain.toString(), // Passes choice to Stripe Dashboard
+        start_date: startDate.toISOString(), 
         end_date: endDate?.toISOString() || startDate.toISOString()
       },
     })

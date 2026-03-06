@@ -19,6 +19,8 @@ interface BookingReceiptProps {
   dateRange: string;
   totalPrice: string;
   bookingId: string;
+  guestCount: number; // NEW
+  isExperiencedCaptain: boolean; // NEW
 }
 
 export const BookingReceipt = ({
@@ -27,6 +29,8 @@ export const BookingReceipt = ({
   dateRange,
   totalPrice,
   bookingId,
+  guestCount = 1, // Fallback default
+  isExperiencedCaptain = false, // Fallback default
 }: BookingReceiptProps) => (
   <Html>
     <Head />
@@ -55,6 +59,12 @@ export const BookingReceipt = ({
             <Text style={statValue}>{bookingType.toUpperCase()}</Text>
           </div>
 
+          {/* NEW: Display Guest Count */}
+          <div style={statRow}>
+            <Text style={statLabel}>Guests</Text>
+            <Text style={statValue}>{guestCount} People</Text>
+          </div>
+
           <div style={statRow}>
             <Text style={statLabel}>Dates</Text>
             <Text style={statValue}>{dateRange}</Text>
@@ -73,24 +83,33 @@ export const BookingReceipt = ({
             <Link href="https://goo.gl/maps/YOUR_MAP_LINK" style={link}>View on Google Maps</Link>
           </Text>
 
-          <Text style={paragraph}>
-            <strong>📞 Your Captain:</strong><br />
-            Fred Olav Bore<br />
-            +47 975 36 122
-          </Text>
+          {/* NEW: Dynamic Captain Instructions */}
+          {isExperiencedCaptain && bookingType === 'expedition' ? (
+            <Text style={paragraph}>
+              <strong>⚓ Captain Status:</strong><br />
+              Bareboat Charter (Self-Captained). Please bring your valid skipper license upon arrival for verification.
+            </Text>
+          ) : (
+            <Text style={paragraph}>
+              <strong>📞 Your Captain:</strong><br />
+              Fred Olav Bore<br />
+              +47 975 36 122
+            </Text>
+          )}
         </Section>
 
         <Text style={footer}>
-          © 2026 Valhalla Voyage. Silent Luxury.
+          {/* UPDATED: Authentic diesel vibe, no false advertising */}
+          © {new Date().getFullYear()} Valhalla Voyage. Authentic Fjord Adventures. 
         </Text>
       </Container>
     </Body>
   </Html>
 );
 
-// CSS Styles (Inline for Email Compatibility)
+// CSS Styles
 const main = {
-  backgroundColor: '#0f172a', // Slate-950
+  backgroundColor: '#0f172a',
   fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
 };
 
@@ -110,7 +129,7 @@ const h1 = {
 };
 
 const heroText = {
-  color: '#fbbf24', // Amber-400
+  color: '#fbbf24', 
   fontSize: '14px',
   fontWeight: 'bold',
   textTransform: 'uppercase' as const,
@@ -120,7 +139,7 @@ const heroText = {
 };
 
 const detailsBox = {
-  backgroundColor: '#1e293b', // Slate-800
+  backgroundColor: '#1e293b', 
   borderRadius: '12px',
   padding: '32px',
   border: '1px solid #334155',

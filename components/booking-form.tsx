@@ -87,7 +87,7 @@ export default function BookingForm() {
   const inputClasses = "w-full bg-slate-800/50 backdrop-blur-sm border border-white/10 text-white rounded-lg p-3 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white/20 transition-all"
 
   return (
-    <LangProvider>
+    
       <div className="bg-slate-900/80 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl max-w-md w-full shadow-2xl animate-in fade-in slide-in-from-right-8">
       
       {/* 1. Three-Way Toggle Switch */}
@@ -233,6 +233,6 @@ export default function BookingForm() {
       {/* MOUNT THE MODAL */}
       <TermsModal isOpen={showTerms} onClose={() => setShowTerms(false)} />
       </div>
-    </LangProvider>
+    
   )
 }

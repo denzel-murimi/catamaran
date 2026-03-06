@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google' // 1. Google Fonts optimization
 import './globals.css'
 import Footer from '@/components/footer'
 import { LangProvider } from '@/components/lang-context'
+import Navbar from '@/components/navbar'
 // 'subsets' reduces file size by only loading Latin characters
 const inter = Inter({ subsets: ['latin'] })
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL 
@@ -58,8 +59,10 @@ export default function RootLayout({
         - text-white: Default text color
       */}
       <body className={`${inter.className} antialiased bg-slate-950 text-white`}>
-        {/* Navigation Bar will go here later */}
+        {/* Navigation Bar */}
+        
         <LangProvider>
+          <Navbar />
           <main className="min-h-screen flex flex-col">
             {children}
           </main>

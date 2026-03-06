@@ -6,15 +6,14 @@ import Gallery from '@/components/gallery'
 import FAQ from '@/components/faq'
 import { ModeProvider } from '@/components/mode-context'
 import { LangProvider, useLang } from '@/components/lang-context'
-import LangToggle from '@/components/lang-toggle'
 
 export default function Home() {
   return (
-    <LangProvider>
+    
       <ModeProvider>
         <HomeContent />
       </ModeProvider>
-    </LangProvider>
+    
   )
 }
 
@@ -23,7 +22,7 @@ function HomeContent() {
 
   return (
     <main className="relative min-h-screen">
-      <LangToggle />
+      
 
       {/* 1. FIXED VIDEO BACKGROUND (Locked in place) */}
       <div className="fixed inset-0 -z-20">
@@ -69,7 +68,7 @@ function HomeContent() {
             </div>
 
             {/* Right Column: The Booking Engine */}
-            <div className="flex justify-center lg:justify-end">
+            <div id="book" className="flex justify-center lg:justify-end">
               <BookingForm />
             </div>
           </div>

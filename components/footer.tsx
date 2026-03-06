@@ -19,7 +19,7 @@ export default function Footer() {
         </div>
 
         {/* Right: Contact Information (The New Data) */}
-        <div className="flex flex-col items-center md:items-end space-y-4">
+        <div id="contact" className="flex flex-col items-center md:items-end space-y-4">
           
           <div className="text-center md:text-right">
             <p className="text-xs font-bold text-amber-500 uppercase tracking-widest mb-1">
@@ -46,7 +46,7 @@ export default function Footer() {
             </a>
 
             <div className="flex items-center gap-3 justify-center md:justify-end text-gray-500">
-              <span>Aker Brygge, Oslo</span>
+              <span>Sandnessjøen</span>
               <MapPin className="w-4 h-4" />
             </div>
           </div>

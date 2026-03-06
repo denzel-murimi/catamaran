@@ -1,6 +1,7 @@
 'use client'
 
 import { X, ShieldAlert, Anchor, CloudRain } from 'lucide-react'
+import { useLang } from '@/components/lang-context'
 
 export default function TermsModal({ 
   isOpen, 
@@ -9,6 +10,8 @@ export default function TermsModal({
   isOpen: boolean; 
   onClose: () => void 
 }) {
+  const { t } = useLang();
+
   if (!isOpen) return null
 
   return (
@@ -26,7 +29,7 @@ export default function TermsModal({
         <div className="flex justify-between items-center p-6 border-b border-white/10 bg-slate-950/50 rounded-t-2xl">
           <h3 className="text-xl font-serif text-white font-bold flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-amber-500" />
-            Charter Agreement
+            {t.termsModal.title}
           </h3>
           <button onClick={onClose} className="text-gray-400 hover:text-white transition">
             <X className="w-6 h-6" />
@@ -39,12 +42,12 @@ export default function TermsModal({
           {/* Section 1: Cancellation */}
           <section>
             <h4 className="text-white font-bold text-base mb-2 flex items-center gap-2">
-              1. Cancellation Policy
+              1. {t.termsModal.cancel.title}
             </h4>
             <ul className="list-disc pl-5 space-y-1 marker:text-amber-500">
-              <li><strong>7+ Days Prior:</strong> Full refund (100%).</li>
-              <li><strong>48 Hours - 7 Days:</strong> 50% refund.</li>
-              <li><strong>Less than 48 Hours:</strong> No refund.</li>
+              <li>{t.termsModal.cancel.b1}</li>
+              <li>{t.termsModal.cancel.b2}</li>
+              <li>{t.termsModal.cancel.b3}</li>
             </ul>
           </section>
 
@@ -52,11 +55,10 @@ export default function TermsModal({
           <section>
             <h4 className="text-white font-bold text-base mb-2 flex items-center gap-2">
               <CloudRain className="w-4 h-4 text-blue-400" />
-              2. Weather Conditions
+              2. {t.termsModal.weather.title}
             </h4>
             <p>
-              The Captain has the final authority to cancel the voyage due to unsafe weather conditions (e.g., gale-force winds, lightning). In such cases, guests will be offered a <strong>full refund</strong> or a reschedule. 
-              <br/><span className="text-gray-500 italic">Note: Rain alone does not constitute unsafe conditions (we have a heated salon).</span>
+              {t.termsModal.weather.desc}
             </p>
           </section>
 
@@ -64,11 +66,11 @@ export default function TermsModal({
           <section>
             <h4 className="text-white font-bold text-base mb-2 flex items-center gap-2">
               <Anchor className="w-4 h-4 text-emerald-400" />
-              3. Vessel Rules
+              3. {t.termsModal.safety.title}
             </h4>
             <ul className="list-disc pl-5 space-y-1 marker:text-emerald-500">
-              <li><strong>Conduct:</strong> The Captain reserves the right to terminate the charter immediately without refund if guests are dangerously intoxicated or endanger the crew.</li>
-              <li><strong>Damages:</strong> The main booker is liable for any damage to the vessel or equipment caused by negligence.</li>
+              <li><strong>{t.termsModal.safety.conductTitle}</strong> {t.termsModal.safety.conductDesc}</li>
+              <li><strong>{t.termsModal.safety.damagesTitle}</strong> {t.termsModal.safety.damagesDesc}</li>
             </ul>
           </section>
         </div>
@@ -79,7 +81,7 @@ export default function TermsModal({
             onClick={onClose}
             className="bg-white text-black font-bold px-6 py-2 rounded-lg hover:bg-gray-200 transition"
           >
-            I Understand
+            {t.termsModal.understand}
           </button>
         </div>
 

@@ -1,3 +1,5 @@
+import { u } from "framer-motion/client"
+
 export const dictionary = {
   en: {
     nav: { book: "Book Voyage", contact: "Contact" },
@@ -58,6 +60,28 @@ export const dictionary = {
       title: "Experience the Fjord",
       desc: "Whether for business or pleasure, Valhalla Voyage offers an unmatched perspective of Oslo."
     },
+    termsModal: {
+      title: "Terms & Conditions",
+      safety: {
+        title: "Captain's Authority",
+        conductTitle: "Conduct:",
+        conductDesc: "The Captain has final say on all matters regarding safety, weather conditions, and guest behavior.",
+        damagesTitle: "Damages:",
+        damagesDesc: "Guests are fully liable for any intentional or reckless damages caused to the vessel."
+      },
+      weather: {
+        title: "Weather Policy",
+        desc: "Tours proceed in light rain. In case of severe or unsafe weather, we offer a reschedule or full refund."
+      },
+      cancel: {
+        title: "Cancellation",
+        b1: "7+ Days Prior: Full refund (100%).",
+        b2: "48 Hours - 7 Days: 50% refund.",
+        b3: "Less than 48 Hours: No refund."
+      },
+      close: "Close",
+      understand: "I Understand"
+    }
   },
   
   no: {
@@ -118,6 +142,28 @@ export const dictionary = {
       title: "Opplev Fjorden",
       desc: "Enten det er for forretninger eller fornøyelser, tilbyr Valhalla Voyage et uovertruffent perspektiv av Oslo."
     },
+    termsModal: {
+      title: "Vilkår og Betingelser",
+      safety: {
+        title: "Kapteinens Autoritet",
+        conductTitle: "Adferd:",
+        conductDesc: "Kapteinen har siste ord i alle saker som gjelder sikkerhet, værforhold og gjesteadferd.",
+        damagesTitle: "Skader:",
+        damagesDesc: "Gjester er fullt ansvarlige for eventuelle tilsiktede eller uforsiktige skader på fartøyet."
+      },
+      weather: {
+        title: "Værpolicy",
+        desc: "Turene gjennomføres i lett regn. Ved alvorlig eller usikkert vær tilbyr vi ombooking eller full refusjon."
+      },
+      cancel: {
+        title: "Avbestilling",
+        b1: "7+ Dager Før: Full refusjon (100%).",
+        b2: "48 Timer - 7 Dager: 50% refusjon.",
+        b3: "Mindre enn 48 Timer: Ingen refusjon."
+      },
+      close: "Lukk",
+      understand: "Jeg Forstår"
+    }
   }
 }
 

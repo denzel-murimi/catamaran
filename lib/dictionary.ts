@@ -4,15 +4,16 @@ export const dictionary = {
   en: {
     nav: { book: "Book Voyage", contact: "Contact" },
     hero: { 
-      title: "The Fjord is Your Lounge.", 
-      subtitle: "Experience the Fjord on our classic catamaran. Reliable diesel power, spacious decks, and authentic Norwegian adventures.",
+      title: "Premium Catamaran Rental & Bareboat Charter on the Helgeland Coast.", 
+      subtitle: "Experience sailing a catamaran under the midnight sun. Whether you are looking for world-class fishing in Norway, an unforgettable whale safari, or a private bareboat adventure, your Arctic voyage starts here.",
       stats: {
         length: "39ft",
         type: "Catamaran",
         capacityNum: "10",
         capacityText: "Guest Capacity"
       },
-      galleryBtn: "Explore the Vessel"
+      galleryBtn: "View Catamaran",
+      photos: "Photos"
     },
     booking: {
       tabs: { day: "Day", stay: "Stay", adv: "Adventure" },
@@ -43,22 +44,22 @@ export const dictionary = {
       title: "Common Inquiries",
       questions: [
         { q: "Can we bring our own food and drinks?", a: "Yes, you are welcome to bring your own catering, or we can arrange it for you." },
-        { q: "Is there a restroom on board?", a: "Yes, the catamaran is fully equipped with a marine restroom." },
+
         { q: "What happens if it rains?", a: "The boat has a spacious indoor lounge to keep you warm and dry." },
         { q: "Do you offer customized itineraries?", a: "Yes, we can tailor your voyage to include specific sights or activities. Just let us know your preferences!" }
 
       ]
     },
     footer: {
-      tagline: "Experience the Oslofjord on our classic catamaran.",
+      tagline: "Premium Catamaran Rental & Bareboat Charter on the Helgeland Coast.",
       services: "Charter. Overnight. Expedition.",
       manager: "General Manager",
       location: "Aker Brygge, Oslo",
       rights: "All rights reserved."
     },
     experience: {
-      title: "Experience the Fjord",
-      desc: "Whether for business or pleasure, Valhalla Voyage offers an unmatched perspective of Oslo."
+      title: "Experience the Helgeland Coast",
+      desc: "Whether for business or pleasure, Valhalla Voyage offers an unmatched perspective of the Helgeland Coast."
     },
     termsModal: {
       title: "Terms & Conditions",
@@ -87,15 +88,16 @@ export const dictionary = {
   no: {
     nav: { book: "Bestill Nå", contact: "Kontakt" },
     hero: { 
-      title: "Fjorden er Din Stue.", 
-      subtitle: "Opplev fjorden på vår klassiske katamaran. Pålitelige dieselmotorer, romslige dekk og autentiske norske opplevelser.",
+      title: "Premium Katamaranutleie & Bareboat Charter på Helgelandskysten.",
+      subtitle: "Opplev seiling med katamaran under midnattssolen. Enten du ønsker verdensklasse fiske i Norge, en uforglemmelig hvalsafari, eller et privat bareboat-eventyr, starter ditt arktiske eventyr her.",
       stats: {
         length: "39 fot",
         type: "Katamaran",
         capacityNum: "10",
         capacityText: "Gjesters Kapasitet"
       },
-      galleryBtn: "Utforsk Fartøyet"
+      galleryBtn: "Se Katamaran",
+      photos: "Bilder"
     },
     booking: {
       tabs: { day: "Dag", stay: "Overnatting", adv: "Eventyr" },
@@ -126,13 +128,12 @@ export const dictionary = {
       title: "Vanlige Spørsmål",
       questions: [
         { q: "Kan vi ta med egen mat og drikke?", a: "Ja, du er velkommen til å ta med egen servering, eller vi kan ordne det for deg." },
-        { q: "Er det toalett om bord?", a: "Ja, katamaranen er fullt utstyrt med et marinetoalett." },
         { q: "Hva skjer hvis det regner?", a: "Båten har en romslig innendørs salong for å holde deg varm og tørr." },
         { q: "Tilbyr dere tilpassede reiseruter?", a: "Ja, vi kan skreddersy reisen din for å inkludere spesifikke severdigheter eller aktiviteter. Gi oss beskjed om dine preferanser!" }
       ]
     },
     footer: {
-      tagline: "Opplev Oslofjorden på vår klassiske katamaran.",
+      tagline: "Premium Katamaranutleie & Bareboat Charter på Helgelandskysten.",
       services: "Dagscruise. Overnatting. Eventyr.",
       manager: "Daglig Leder",
       location: "Aker Brygge, Oslo",

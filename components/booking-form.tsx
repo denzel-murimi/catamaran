@@ -33,11 +33,11 @@ export default function BookingForm() {
 
   useEffect(() => {
     if (mode === 'charter') {
-      setPriceDisplay('$4,000') // Update this fixed rate to whatever USD value the owner wants
+      setPriceDisplay('$4,000') 
     } 
     else if (mode === 'hotel' && range?.from && range?.to) {
       const nights = Math.max(1, differenceInDays(range.to, range.from))
-      setPriceDisplay(`$${nights * 600}`) // Update this fixed rate to whatever USD value the owner wants
+      setPriceDisplay(`$${(nights * 600).toLocaleString()}`) 
     } 
     else if (mode === 'expedition' && range?.from && range?.to) {
       const days = Math.max(1, differenceInDays(range.to, range.from))
@@ -45,11 +45,25 @@ export default function BookingForm() {
       
       // NEW PRICING LOGIC
       if (isExperiencedCaptain) {
-        // Bareboat Weekly Rate
-        setPriceDisplay(`$${4000 * weeks} - $${6000 * weeks}`)
+        // 1. Extract the start month (0-indexed, so we add 1)
+        const startMonth = range.from.getMonth() + 1;
+        
+        // 2. Determine the seasonal weekly rate
+        let weeklyRate = 4000; // Default
+        if (startMonth === 5) {
+          weeklyRate = 4000; // May
+        } else if (startMonth === 6) {
+          weeklyRate = 5000; // June
+        } else if (startMonth === 7) {
+          weeklyRate = 6000; // July
+        }
+
+        // 3. Display the exact calculated total
+        setPriceDisplay(`$${(weeklyRate * weeks).toLocaleString()}`)
+        
       } else {
-        // Full Board + Captain (Assuming $400 is per person, per day. If it's a flat $400 total per day, remove "* guests")
-        setPriceDisplay(`$${days * guests * 400}`) 
+        // Full Board + Captain 
+        setPriceDisplay(`$${(days * guests * 400).toLocaleString()}`) 
       }
     } 
     else {

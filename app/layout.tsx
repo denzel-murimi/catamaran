@@ -10,38 +10,42 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
   ? process.env.NEXT_PUBLIC_BASE_URL 
   : 'http://localhost:3000'
 // 3. SEO Metadata (Crucial for "Catamaran Oslo" search ranking)
+
+
 export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
-  title: 'The Valhalla Voyage | Exclusive Catamaran Charter ',
-  description: 'Luxury catamaran charters and overnight stays in the heart of Oslofjord. Experience the Nordic silence.',
+  title: 'Valhalla Voyage | Catamaran Charter on the Helgeland Coast',
+  description: 'Experience sailing a catamaran under the midnight sun. Book a private whale safari, world-class fishing, and unforgettable adventures on the Helgeland Coast.',
+  keywords: [
+    'Helgeland Coast', 
+    'sailing a catamaran', 
+    'midnight sun', 
+    'whale safari', 
+    'fishing Norway',
+    'boat rental Helgeland', 
+    'bareboat charter Norway'
+  ],
   openGraph: {
-    title: 'Valhalla Voyage | The Fjord is Your Lounge',
-    description: 'Rent your own private floating luxury apartment. Day charters, overnight stays, and expeditions available now.',
-    url: baseUrl,
+    title: 'Valhalla Voyage | Helgeland Coast Catamaran Charter',
+    description: 'Experience sailing a catamaran under the midnight sun. Book a private whale safari, world-class fishing, and unforgettable adventures on the Helgeland Coast.',
+    url: 'https://valhallavoyage.com', // Update this if your live domain is different!
     siteName: 'Valhalla Voyage',
-    locale: 'en_US',
-    type: 'website',
     images: [
       {
-        url: '/assets/ext-profile.jpg', // We use the specific file you renamed
+        // We will need to make sure you have an image at this path in your public folder!
+        url: 'https://valhallavoyage.com/ext-profile.jpg', 
         width: 1200,
         height: 630,
-        alt: 'Lagoon 400 S2 Catamaran in Oslofjord',
+        alt: 'Valhalla Voyage Catamaran sailing the Helgeland Coast',
       },
     ],
+    locale: 'en_US',
+    type: 'website',
   },
-
-  // 4. TWITTER CARD (Large Image)
   twitter: {
     card: 'summary_large_image',
-    title: 'Valhalla Voyage',
-    description: 'Silent luxury cruising in Oslo. Book your private charter today.',
-    images: ['/assets/ext-profile.jpg'], 
-  },
-  
-  // 5. ICONS (Favicon)
-  icons: {
-    icon: '/icons8-favicon-32.png', // Ensure you have a favicon in /public
+    title: 'Valhalla Voyage | Helgeland Coast Catamaran',
+    description: 'Experience sailing a catamaran under the midnight sun on the Helgeland Coast.',
+    images: ['https://valhallavoyage.com/ext-profile.jpg'], 
   },
 }
 

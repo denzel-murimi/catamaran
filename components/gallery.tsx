@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Lightbox from "yet-another-react-lightbox"
 import "yet-another-react-lightbox/styles.css"
 import { Camera } from 'lucide-react'
+import { useLang } from './lang-context'
 
 // THE REAL ASSETS
 type CustomSlide = {
@@ -62,6 +63,7 @@ const slides: CustomSlide[] = [
 
 export default function Gallery() {
   const [open, setOpen] = useState(false)
+  const { t } = useLang()
 
   return (
     <>
@@ -73,7 +75,7 @@ export default function Gallery() {
             <Camera className="w-4 h-4" />
         </div>
         <span className="text-sm font-medium tracking-widest uppercase border-b border-transparent group-hover:border-white transition pb-0.5">
-            View Residence ({slides.length} Photos)
+            {t.hero.galleryBtn || "View Catamaran"} ({slides.length} {t.hero.photos || "Photos"})
         </span>
       </button>
 

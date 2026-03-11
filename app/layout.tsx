@@ -48,7 +48,37 @@ export const metadata: Metadata = {
     images: ['https://valhallavoyage.com/ext-profile.jpg'], 
   },
 }
-
+// This creates the structured data Google uses to rank local businesses
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["TravelAgency", "LocalBusiness"],
+  "name": "Valhalla Voyage",
+  "description": "Premium catamaran rental and bareboat charters on the Helgeland Coast. Experience the midnight sun, whale safaris, and world-class fishing in Norway.",
+  "url": "https://valhallavoyage.com",
+  "image": "https://valhallavoyage.com/og-image.jpg",
+  "telephone": "+47 975 36 122", 
+  "priceRange": "$$$",
+  "address": {
+    "@type": "PostalAddress",
+    // Helgeland is located in the Nordland county of Norway
+    "addressLocality": "Helgeland", 
+    "addressRegion": "Nordland",
+    "addressCountry": "NO"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    // Rough coordinates for the Helgeland Coast (Fred can update to his exact marina)
+    "latitude": 65.9000, 
+    "longitude": 12.5000
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "offerCount": "3",
+    "lowPrice": "600",
+    "highPrice": "6000",
+    "priceCurrency": "USD"
+  }
+}
 export default function RootLayout({
   children,
 }: {
@@ -64,14 +94,14 @@ export default function RootLayout({
       */}
       <body className={`${inter.className} antialiased bg-slate-950 text-white`}>
         {/* Navigation Bar */}
-        
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <LangProvider>
           <Navbar />
           <main className="min-h-screen flex flex-col">
             {children}
           </main>
           
-          {/* Footer will go here later */}
+          
           <Footer />
         </LangProvider>
       </body>

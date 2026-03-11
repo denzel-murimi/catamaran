@@ -4,7 +4,7 @@ export const dictionary = {
   en: {
     nav: { book: "Book Voyage", contact: "Contact" },
     hero: { 
-      title: "Premium Catamaran Rental & Bareboat Charter on the Helgeland Coast.", 
+      title: "Sailing a Catamaran on the Helgeland Coast", 
       subtitle: "Experience sailing a catamaran under the midnight sun. Whether you are looking for world-class fishing in Norway, an unforgettable whale safari, or a private bareboat adventure, your Arctic voyage starts here.",
       stats: {
         length: "39ft",
@@ -30,7 +30,7 @@ export const dictionary = {
         afternoon: "Afternoon Cruise (14:00 - 18:00)",
         evening: "Evening Champagne (19:00 - 23:00)"
       },
-      placeholders: { name: "Full Name", email: "Corporate Email" },
+      placeholders: { name: "Full Name", email: "Email" },
       terms: {
         agree: "I agree to the",
         link: "Cancellation Policy & Terms",
@@ -51,7 +51,7 @@ export const dictionary = {
       ]
     },
     footer: {
-      tagline: "Premium Catamaran Rental & Bareboat Charter on the Helgeland Coast.",
+      tagline: "Sailing a Catamaran on the Helgeland Coast.",
       services: "Charter. Overnight. Expedition.",
       manager: "General Manager",
       location: "Aker Brygge, Oslo",
@@ -88,7 +88,7 @@ export const dictionary = {
   no: {
     nav: { book: "Bestill Nå", contact: "Kontakt" },
     hero: { 
-      title: "Premium Katamaranutleie & Bareboat Charter på Helgelandskysten.",
+      title: "Seiling med Katamaran på Helgelandskysten.",
       subtitle: "Opplev seiling med katamaran under midnattssolen. Enten du ønsker verdensklasse fiske i Norge, en uforglemmelig hvalsafari, eller et privat bareboat-eventyr, starter ditt arktiske eventyr her.",
       stats: {
         length: "39 fot",
@@ -114,7 +114,7 @@ export const dictionary = {
         afternoon: "Ettermiddagscruise (14:00 - 18:00)",
         evening: "Kveldschampagne (19:00 - 23:00)"
       },
-      placeholders: { name: "Fullt Navn", email: "Bedriftsepost" },
+      placeholders: { name: "Fullt Navn", email: "E-post" },
       terms: {
         agree: "Jeg godtar",
         link: "Avbestillingsregler og vilkår",
@@ -133,7 +133,7 @@ export const dictionary = {
       ]
     },
     footer: {
-      tagline: "Premium Katamaranutleie & Bareboat Charter på Helgelandskysten.",
+      tagline: "Seiling med Katamaran på Helgelandskysten.",
       services: "Dagscruise. Overnatting. Eventyr.",
       manager: "Daglig Leder",
       location: "Aker Brygge, Oslo",

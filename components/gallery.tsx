@@ -59,6 +59,26 @@ const slides: CustomSlide[] = [
     title: "Vessel Layout",
     description: "4 Double Cabins, 2 Bathrooms - Privacy for all guests."
   },
+  {
+    src: "/assets/whale.jpg",
+    title: "Whale Safari",
+    description: "Get up close with majestic whales in their natural habitat."
+  },
+  {
+    src: "/assets/fishing.jpg",
+    title: "World-Class Fishing",
+    description: "Fish the rich waters of the Helgeland Coast."
+  },
+  {
+    src: "/assets/bow.jpg",
+    title: "Sailing the Helgeland Coast",
+    description: "Navigate the stunning fjords and islands of Norway."
+  },
+  {
+    src: "/assets/coast.jpg",
+    title: "The Helgeland Coast",
+    description: "Explore the rugged beauty of Norway's Helgeland coast."
+  }
 ]
 
 export default function Gallery() {

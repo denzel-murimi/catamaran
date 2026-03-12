@@ -53,7 +53,7 @@ export default async function AdminDashboard() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div className="bg-slate-900 border border-white/10 p-6 rounded-xl">
           <h3 className="text-gray-400 text-sm uppercase tracking-widest mb-2">Total Revenue</h3>
-          <p className="text-4xl font-bold text-emerald-400">{totalRevenue.toLocaleString()} NOK</p>
+          <p className="text-4xl font-bold text-emerald-400">{totalRevenue.toLocaleString()} USD</p>
         </div>
         
         <div className="bg-slate-900 border border-white/10 p-6 rounded-xl">

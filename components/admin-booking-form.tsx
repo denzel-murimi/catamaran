@@ -34,43 +34,51 @@ export default function AdminBookingForm() {
         <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-white">✕</button>
       </div>
 
-      <form action={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      {/* Expanded grid to 6 columns to fit the new Guests field perfectly */}
+      <form action={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
         
         {/* 1. Name */}
         <div className="space-y-1">
           <label className="text-xs text-gray-400">Guest / Reason</label>
           <input name="name" type="text" placeholder="e.g. Engine Service" required 
-            className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm" />
+            className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm focus:ring-1 focus:ring-amber-500 outline-none" />
         </div>
 
         {/* 2. Type */}
         <div className="space-y-1">
           <label className="text-xs text-gray-400">Type</label>
-          <select name="type" className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm">
+          <select name="type" className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm focus:ring-1 focus:ring-amber-500 outline-none">
             <option value="maintenance">Maintenance (Block)</option>
-            <option value="charter">VIP Charter</option>
-            <option value="hotel">VIP Hotel Stay</option>
+            <option value="bareboat">Bareboat Charter</option>
+            <option value="all-inclusive">All-Inclusive Expedition</option>
           </select>
         </div>
 
-        {/* 3. Dates */}
+        {/* NEW: 3. Guests */}
+        <div className="space-y-1">
+          <label className="text-xs text-gray-400">Guests</label>
+          <input name="guestCount" type="number" min="0" max="10" defaultValue="0" required 
+            className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm focus:ring-1 focus:ring-amber-500 outline-none" />
+        </div>
+
+        {/* 4. Dates */}
         <div className="space-y-1">
           <label className="text-xs text-gray-400">Start (ISO)</label>
           <input name="start" type="datetime-local" required 
-            className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm" />
+            className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm focus:ring-1 focus:ring-amber-500 outline-none" />
         </div>
         <div className="space-y-1">
           <label className="text-xs text-gray-400">End (ISO)</label>
           <input name="end" type="datetime-local" required 
-            className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm" />
+            className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm focus:ring-1 focus:ring-amber-500 outline-none" />
         </div>
 
-        {/* 4. Price & Submit */}
+        {/* 5. Price & Submit */}
         <div className="space-y-1">
-          <label className="text-xs text-gray-400">Price (NOK)</label>
+          <label className="text-xs text-gray-400">Price (USD)</label>
           <div className="flex gap-2">
             <input name="price" type="number" defaultValue="0" 
-              className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm" />
+              className="w-full bg-slate-800 border border-white/10 rounded p-2 text-white text-sm focus:ring-1 focus:ring-amber-500 outline-none" />
             <button className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold px-4 rounded transition">
               Add
             </button>

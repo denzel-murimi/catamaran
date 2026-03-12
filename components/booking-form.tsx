@@ -55,10 +55,20 @@ export default function BookingForm() {
   }, [range, guests, isExperiencedCaptain])
 
   // Calendar Lock: Prevent winter bareboat bookings
+  // Universally block the harsh winter months for ALL bookings
   const isDateDisabled = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); 
-    return date < today; 
+    if (date < today) return true; // Always block the past
+
+    const month = date.getMonth();
+    // JavaScript months are 0-indexed (0=Jan, 1=Feb, 2=Mar ... 9=Oct, 10=Nov, 11=Dec)
+    // We block anything before April (index 3) and anything after September (index 8)
+    if (month < 3 || month > 8) {
+      return true; 
+    }
+    
+    return false;
   };
 
   async function handleSubmit(formData: FormData) {

@@ -107,7 +107,7 @@ export async function createBooking(
   if (booking) {
     // --- 5. SEND RESEND EMAIL ---
     await resend.emails.send({
-      from: 'Valhalla Voyage <onboarding@resend.dev>', // Change when you verify a domain
+      from: 'Valhalla Voyage <bookings@sailinghelgeland.com>', // Change when you verify a domain
       to: email, 
       subject: 'Your Helgeland Coast Reservation',
       react: BookingReceipt({

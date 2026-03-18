@@ -8,7 +8,7 @@ import Navbar from '@/components/navbar'
 const inter = Inter({ subsets: ['latin'] })
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL 
   ? process.env.NEXT_PUBLIC_BASE_URL 
-  : 'http://localhost:3000'
+  : 'https://www.sailinghelgeland.com'
 // 3. SEO Metadata (Crucial for "Catamaran Oslo" search ranking)
 
 
@@ -27,12 +27,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Valhalla Voyage | Helgeland Coast Catamaran Charter',
     description: 'Experience sailing a catamaran under the midnight sun. Book a private whale safari, world-class fishing, and unforgettable adventures on the Helgeland Coast.',
-    url: 'https://valhallavoyage.com', // Update this if your live domain is different!
+    url: 'https://www.sailinghelgeland.com', // Update this if your live domain is different!
     siteName: 'Valhalla Voyage',
     images: [
       {
         // We will need to make sure you have an image at this path in your public folder!
-        url: 'https://valhallavoyage.com/ext-profile.jpg', 
+        url: 'https://www.sailinghelgeland.com/ext-profile.jpg', 
         width: 1200,
         height: 630,
         alt: 'Valhalla Voyage Catamaran sailing the Helgeland Coast',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Valhalla Voyage | Helgeland Coast Catamaran',
     description: 'Experience sailing a catamaran under the midnight sun on the Helgeland Coast.',
-    images: ['https://valhallavoyage.com/ext-profile.jpg'], 
+    images: ['https://www.sailinghelgeland.com/ext-profile.jpg'], 
   },
 }
 // This creates the structured data Google uses to rank local businesses
@@ -54,8 +54,8 @@ const jsonLd = {
   "@type": ["TravelAgency", "LocalBusiness"],
   "name": "Valhalla Voyage",
   "description": "Premium catamaran rental and bareboat charters on the Helgeland Coast. Experience the midnight sun, whale safaris, and world-class fishing in Norway.",
-  "url": "https://valhallavoyage.com",
-  "image": "https://valhallavoyage.com/og-image.jpg",
+  "url": "https://www.sailinghelgeland.com",
+  "image": "https://www.sailinghelgeland.com/ext-profile.jpg",
   "telephone": "+47 975 36 122", 
   "priceRange": "$$$",
   "address": {

@@ -28,7 +28,6 @@ export default async function AdminDashboard() {
   
   const pendingCount = bookings.filter(b => b.status === 'pending').length
 
- 
   return (
     <div className="min-h-screen bg-slate-950 text-white p-8">
       
@@ -98,14 +97,19 @@ export default async function AdminDashboard() {
                   </div>
                 </td>
 
-                {/* Column 2: Type */}
+                {/* Column 2: Type (PATCHED) */}
                 <td className="p-5">
-                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
-                    booking.booking_type === 'charter' 
+                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${
+                    booking.booking_type?.toLowerCase() === 'bareboat' 
                       ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' 
-                      : 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                      : booking.booking_type?.toLowerCase().includes('inclusive') 
+                      ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+                      : booking.booking_type?.toLowerCase() === 'maintenance'
+                      ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20'
+                      : 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
                   }`}>
-                    {booking.booking_type === 'charter' ? 'Day Charter' : 'Overnight'}
+                    {/* Render whatever string is in the database, fallback to Unknown */}
+                    {booking.booking_type ? booking.booking_type.replace('_', ' ') : 'Unknown'}
                   </span>
                 </td>
 

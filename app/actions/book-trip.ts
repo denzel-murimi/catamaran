@@ -85,7 +85,7 @@ export async function createBooking(
   // We dynamically set the booking type so Fred knows exactly what they bought
   const finalBookingType = isExperiencedCaptain ? 'bareboat' : 'all-inclusive';
 
-  const { data: booking, error } = await supabase
+ const { data: booking, error } = await supabase
     .from('bookings')
     .insert({
       customer_name: name,
@@ -99,9 +99,24 @@ export async function createBooking(
     .select()
     .single()
 
+  // --- THE NEW ERROR INTERCEPTOR ---
   if (error) {
+    // Keep the raw error in your server logs for debugging
     console.error("Supabase Error:", error)
-    return { success: false, error: error.message }
+    
+    // Check if it's the specific double-booking constraint
+    if (error.message.includes('no_double_bookings')) {
+      return { 
+        success: false, 
+        error: "Oops! Those dates are already booked. Please select a different available date range." 
+      }
+    }
+
+    // Generic fallback for any other unexpected database issues
+    return { 
+      success: false, 
+      error: "Something went wrong processing your request. Please try again or contact us." 
+    }
   }
 
   if (booking) {

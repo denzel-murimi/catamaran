@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { DayPicker, DateRange } from 'react-day-picker'
-import { differenceInDays } from 'date-fns'
+import { differenceInDays, isSameDay } from 'date-fns' // Added isSameDay for comparing dates
 import 'react-day-picker/dist/style.css'
 import { createBooking } from '@/app/actions/book-trip'
 import { clsx } from 'clsx'
@@ -10,7 +10,8 @@ import { Users } from 'lucide-react'
 import TermsModal from '@/components/terms-modal'
 import { useLang } from '@/components/lang-context'
 
-export default function BookingForm() {
+// 1. ADD PROPS: We now expect the server to hand us existing bookings
+export default function BookingForm({ existingBookings = [] }: { existingBookings?: any[] }) {
   const { t } = useLang()
   const [range, setRange] = useState<DateRange | undefined>()
   
@@ -24,6 +25,32 @@ export default function BookingForm() {
   
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [priceDisplay, setPriceDisplay] = useState('')
+  console.log("Existing Bookings from Server:", existingBookings)
+  // 2. PARSE THE DATES: Turn Postgres date strings into JS Date objects
+  const disabledDatesList = useMemo(() => {
+    const dates: Date[] = []
+    
+    existingBookings.forEach((booking) => {
+      if (booking.duration) {
+        // A standard Postgres daterange looks like: "[2026-05-10,2026-05-17)"
+        // This splits it and grabs the start and end string
+        const parts = booking.duration.replace(/[[\]()"]/g, '').split(',')
+        if (parts.length === 2) {
+           const startDate = new Date(parts[0])
+           const endDate = new Date(parts[1])
+           
+           // Loop through every day in that range and add it to our disabled list
+           let currentDate = new Date(startDate)
+           while (currentDate <= endDate) {
+             dates.push(new Date(currentDate))
+             currentDate.setDate(currentDate.getDate() + 1)
+           }
+        }
+      }
+    })
+    return dates
+  }, [existingBookings])
+
 
   useEffect(() => {
     if (range?.from && range?.to) {
@@ -54,21 +81,19 @@ export default function BookingForm() {
     }
   }, [range, guests, isExperiencedCaptain])
 
-  // Calendar Lock: Prevent winter bareboat bookings
-  // Universally block the harsh winter months for ALL bookings
+  // 3. THE MASTER LOCK: Combine winter block + Supabase block
   const isDateDisabled = (date: Date) => {
+    // Lock 1: Past Dates
     const today = new Date();
     today.setHours(0, 0, 0, 0); 
-    if (date < today) return true; // Always block the past
+    if (date < today) return true; 
 
+    // Lock 2: The Winter Months
     const month = date.getMonth();
-    // JavaScript months are 0-indexed (0=Jan, 1=Feb, 2=Mar ... 9=Oct, 10=Nov, 11=Dec)
-    // We block anything before April (index 3) and anything after September (index 8)
-    if (month < 3 || month > 8) {
-      return true; 
-    }
-    
-    return false;
+    if (month < 3 || month > 8) return true; 
+
+    // Lock 3: The Database (Is this day inside the disabledDatesList array?)
+    return disabledDatesList.some((disabledDate) => isSameDay(date, disabledDate));
   };
 
   async function handleSubmit(formData: FormData) {
@@ -146,7 +171,7 @@ export default function BookingForm() {
       <div className="flex justify-center mb-6 bg-white/5 rounded-xl p-2 sm:p-4 w-full max-w-full [&_.rdp]:w-full [&_.rdp-months]:w-full [&_.rdp-month]:w-full [&_.rdp-table]:w-full [&_.rdp-head_cell]:w-auto [&_.rdp-cell]:w-auto sm:[&_.rdp-day]:w-8 sm:[&_.rdp-day]:h-8 sm:[&_.rdp-day]:text-sm [&_.rdp-day]:text-xs">
           <DayPicker
             mode="range" selected={range} onSelect={setRange} min={1}
-            disabled={isDateDisabled}
+            disabled={isDateDisabled} // <--- The magic happens here!
             modifiersClassNames={{ selected: 'bg-white text-black rounded-full font-bold', range_middle: 'bg-white/20 !rounded-none', today: 'text-amber-400' }}
             className="text-white"
           />
